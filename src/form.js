@@ -19,6 +19,19 @@ const createForm = WrappedComponent => class extends Component {
         return (name) => ({ ...initInfo(name)})
     }
 
+    createErr = () => {
+        this.$errData = {}
+        return (name, errFun) => {
+            const v = this.getData(name)
+            const tmp = v => v => errFun(v)
+            this.$errData[name] = {
+                value: errFun(v),
+                errFun: tmp(v)
+            }
+            return this.$errData[name].value
+        }
+    }
+
     getData = (name) => {
         const pathList = name.split('.')
         let value = pathList.reduce( (state, key ) => {
@@ -36,12 +49,29 @@ const createForm = WrappedComponent => class extends Component {
         this.setState({...state})
     }
 
+    check = () => {
+        const errData = this.$errData
+        if(errData){
+            for (let key in errData) {
+                if (errData.hasOwnProperty(key)) {
+                   if(errData[key].value) return false
+                }
+            }
+            return true
+        }else{
+            return true
+        }
+    }
+
     render() {
         const form = {
             createItem: this.createItem,
             $data: this.$data,
             getData: this.getData,
-            setData: this.setData
+            setData: this.setData,
+            $errData: this.$errData,
+            createErr: this.createErr,
+            check: this.check
         }
         return <WrappedComponent {...{form}} />
     }
