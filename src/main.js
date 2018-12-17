@@ -21,8 +21,8 @@ class App extends React.Component {
 
         return (
             <div>
-                  App:  <NoInput {...Item('name1')} />
-                  App:  <NoInput {...Item('name2')} />
+                  App:  <NoInput {...Item('ss.a1')} />
+                  App:  <NoInput {...Item('ss.a2')} />
                   App:  <NoInput {...Item('name3')} />
                   <div>
                       {JSON.stringify(form.$data)}

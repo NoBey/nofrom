@@ -45,7 +45,16 @@ const createForm = WrappedComponent => class extends Component {
         const state = {...this.state}
         const pathList = name.split('.')
         let tmp = state 
-        pathList.map(k => (tmp[k] instanceof Object) ? tmp = tmp[k] : tmp[k] = value)
+        pathList.map(k => {
+            if(pathList[pathList.length -1] === k){
+                return tmp[k] = value
+            }
+            if(tmp[k] === undefined) {
+                tmp[k] = {}
+            }
+            tmp = tmp[k]
+        } )
+        console.log(name, pathList, state)
         this.setState({...state})
     }
 
